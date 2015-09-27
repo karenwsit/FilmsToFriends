@@ -109,19 +109,22 @@ def logout():
 def jsonify_result():
 
     assessment_id = session.get('assessment',"")
+    user_id = session.get('user_id',"")
     traitify = Traitify(traitify_secret)
 
+    # Get an assessment's results (personality types)
     personality_types = traitify.get_personality_types(assessment_id)
-    print personality_types
+
+    # Get an assessment's results (personality type traits)
+    personality_type = personality_types["personality_types"][0].personality_type
+    print "personality type:", personality_type.attributes['name'], "$$$$$$$$$"
 
 
-    this_property = Property.query.filter(Property.zpid == property_from_url.zpid).first()
+    this_user = User.query.filter(User.user_id == user_id).first()
 
-    if this_property is None:
-        db.session.add(property_from_url)
+    if this_user:
+        this_user.personality = personality_type.attributes['name']
         db.session.commit()
-
-    this_property = property_from_url
 
 
     return render_template("results.html", session=session)
