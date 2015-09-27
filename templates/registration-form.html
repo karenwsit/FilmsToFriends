@@ -15,13 +15,7 @@ $(document).ready(function() {
             'password':$ ("#register-password").val(),
             'zipcode':$('#register-zipcode').val()}
             })
-            .done(function(result) {
-                if (result.length > 0 ) {
-                    $("#address-confirm").css("display","block");
-                    $("#address-confirm").html(result);
-            }
-            $("#login-form").css("display","none");
-       });  
+            $("#login-form").css("display","none");  
     });
 });
 

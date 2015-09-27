@@ -1,13 +1,13 @@
 import os
-from flask import flash, Flask, render_template, session, request
+
+from flask import flash, Flask, redirect, render_template, request, session
 from flask_debugtoolbar import DebugToolbarExtension
-from traitify import TraitifyModel, Traitify, Deck
-from model import connect_to_db, User
+from traitify import Deck, Traitify, TraitifyModel 
+from model import connect_to_db, db, User
 
 app = Flask(__name__)
 
 app.secret_key = "ABC"
-
 
 traitify_public = os.environ["TRAITIFY_PUBLIC_KEY"]
 traitify_secret = os.environ["TRAITIFY_SECRET"]
@@ -46,9 +46,8 @@ def register_process():
         email = request.form["email"]
         password = request.form["password"]
         zipcode = request.form["zipcode"]
-        personality = request.form["personality"]
 
-        new_user = User(fname=fname, lname=lname, email=email, password=password, zipcode=zipcode, personality=personality)
+        new_user = User(fname=fname, lname=lname, email=email, password=password, zipcode=zipcode, personality=None)
 
         db.session.add(new_user)
         db.session.commit()
@@ -109,13 +108,18 @@ def logout():
 #     personality_types = traitify.get_personality_types(assessment.id)
 #     print personality_types
 
-##########################################################################
-
+################################
 if __name__ == "__main__":
-    app.run(debug=True)
+    # We have to set debug=True here, since it has to be True at the point
+    # that we invoke the DebugToolbarExtension
+    app.debug = True
+
     connect_to_db(app)
 
+    # Use the DebugToolbar
     DebugToolbarExtension(app)
+
+    app.run()
 
 else:
     connect_to_db(app)

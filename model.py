@@ -1,8 +1,12 @@
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
+import json
+import os
 import sqlite3
 import sys
-import os
+import urllib
+from urllib2 import Request, urlopen, URLError
+
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
@@ -38,6 +42,9 @@ class User(db.Model):
         return "<User user_id=%s email=%s>" % (self.user_id, self.email)
 
 
+
+###############################################################
+
 def get_db_cursor():
     """Return a database cursor"""
     mypath = os.path.dirname(os.path.abspath(__file__))
@@ -48,12 +55,15 @@ def get_db_cursor():
 def connect_to_db(app):
     """Connect the database to our Flask app."""
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///filmstofriends.db'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-
-    db.app = app
+    # Configure to use our SQLite database
+    dbpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'filmstofriends.db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+dbpath
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True  # bug fix for SQLAlchemy misbehaving on Apache servers
+    db.app = app 
     db.init_app(app)
-
+    # ensure that the databases are created for each context
+    with app.app_context():
+        db.create_all()
 
 if __name__ == "__main__":
     # As a convenience, if we run this module interactively, it will leave
