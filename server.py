@@ -3,7 +3,7 @@ import os
 from flask import flash, Flask, redirect, render_template, request, session
 from flask_debugtoolbar import DebugToolbarExtension
 from traitify import Deck, Traitify, TraitifyModel 
-from model import connect_to_db, db, User
+from model import connect_to_db, db, Movie, User
 
 app = Flask(__name__)
 
@@ -105,8 +105,8 @@ def logout():
     return redirect("/")
 
 
-@app.route("/json")
-def jsonify_result():
+@app.route("/movies")
+def commit_personality_load_movies():
 
     assessment_id = session.get('assessment',"")
     user_id = session.get('user_id',"")
@@ -127,7 +127,58 @@ def jsonify_result():
         db.session.commit()
 
 
+    # movies = session.get("movies",[])
+    movies = db.session.query(Movie.movie_id, Movie.title, Movie.genre, Movie.length, Movie.image_link)
+
+    if this_user.personality == "Beliver":
+        by_genre = movies.filter(db.or_(Movie.genre.like('%Action%'),
+                                    Movie.genre.like('%Adventure%'),
+                                    Movie.genre.like('%Fantasy%'),
+                                    Movie.genre.like('%Sci-Fi%')
+                                    )).all() 
+
+    elif this_user.personality == "Dramatic":
+        by_genre = movies.filter(db.or_(Movie.genre.like('Biography%'),
+                                    Movie.genre.like('%Crime%'),
+                                    Movie.genre.like('%Drama%'),
+                                    Movie.genre.like('%History%'),
+                                    Movie.genre.like('%Mystery%'),
+                                    Movie.genre.like('%Western%')
+                                    )).all()
+
+    elif this_user.personality == "Indie":
+        by_genre = movies.filter(db.or_(Movie.genre.like('%Documentary%'),
+                                    Movie.genre.like('%History%'),
+                                    Movie.genre.like('%Mystery%')
+                                    )).all()
+
+    elif this_user.personality == "Laughaholic":
+        by_genre = movies.filter(db.or_(Movie.genre.like('%Comedy%'),
+                                    Movie.genre.like('%Family%')
+                                    )).all()
+
+    elif this_user.personality == "Romantic":
+        by_genre = movies.filter(db.or_(Movie.genre.like('%Romance%'),
+                                    Movie.genre.like('%Comedy%')
+                                    )).all()
+
+    elif this_user.personality == "Nail Biter":
+        by_genre = movies.filter(db.or_(Movie.genre.like('%Horror%'),
+                                    Movie.genre.like('%Crime%'),
+                                    Movie.genre.like('%Mystery%'),
+                                    Movie.genre.like('%Thriller%')
+                                    )).all()
+
+    elif this_user.personality == "Stunt Double":
+        by_genre = movies.filter(db.or_(Movie.genre.like('%Action%'),
+                                    Movie.genre.like('%War%'),
+                                    Movie.genre.like('%Adventure%'),
+                                    Movie.genre.like('%Western%')
+                                    )).all()
+
+    print "by_genre is", by_genre
     return render_template("results.html", session=session)
+
 ###############################
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point

@@ -19,14 +19,14 @@
           $("#movietimes-btn").click(function() {
 
       // Send the personality type to the database
-              $.get("/json", {'address-search': $("#address-search").val()}).done(function(results) {
+              $.get("/movies", {'address-search': $("#address-search").val()}).done(function(results) {
                   var contents = results;
                   $("#movietimes-btn").css("display","inline");
               });   
           });
       });
     </script>​
-    <a href="#" id="movietimes-btn" class="btn btn-large btn-primary" style="display:hidden">Close</a>
+    <a href="#" id="movietimes-btn" class="btn btn-large btn-primary" style="display:hidden">Show local movies!</a>
 
 
 {% endblock %}
