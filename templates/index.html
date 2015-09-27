@@ -1,9 +1,11 @@
-<html>​
-  <head>​
+{% extends 'base.html' %}
+{% block content %}
+
+
     <script src="https://cdn.traitify.com/js/widgets/v1.js"></script>​
     <script src="//cdn.traitify.com/patches/dev_mode.js"></script>
-  </head>​
-  <body>​
+
+
     <div class="assessment"></div>​
     <script>
       Traitify.setPublicKey("{{ traitifyPublic }}");
@@ -13,6 +15,6 @@
       var assessmentId = "{{ assessmentId }}";
       Traitify.ui.load(assessmentId, ".assessment")
     </script>​
-    HELLO
-  </body>​
-​</html>
+
+
+{% endblock %}

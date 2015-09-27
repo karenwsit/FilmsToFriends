@@ -1,9 +1,12 @@
 import os
-from flask import flash, Flask, render_template, session
+from flask import flash, Flask, render_template, session, request
 from flask_debugtoolbar import DebugToolbarExtension
 from traitify import TraitifyModel, Traitify, Deck
+from model import connect_to_db, User
 
 app = Flask(__name__)
+
+app.secret_key = "ABC"
 
 
 traitify_public = os.environ["TRAITIFY_PUBLIC_KEY"]
@@ -100,16 +103,19 @@ def logout():
     flash("Logged Out.")
     return redirect("/")
 
-##########################################################################
-
-
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
 # @app.route("/json")
 # def jsonify_result():
 
 #     personality_types = traitify.get_personality_types(assessment.id)
 #     print personality_types
+
+##########################################################################
+
+if __name__ == "__main__":
+    app.run(debug=True)
+    connect_to_db(app)
+
+    DebugToolbarExtension(app)
+
+else:
+    connect_to_db(app)

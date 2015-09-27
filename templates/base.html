@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+    <title>Films to Friends</title>
+    
+    <script src="static/jquery-2.1.4.min.js"></script>
+
+    <script src="static/films.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+
+
+
+    
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+    <link href='https://fonts.googleapis.com/css?family=Walter+Turncoat' rel='stylesheet' type='text/css'>
+    <intercept-url pattern="/favicon.ico" access="ROLE_ANONYMOUS" />
+    <style>
+
+      #homepage-title {
+            margin: 0;
+            top: 0.5em;
+            width: 100%;
+            text-align: center;
+            color: #CCE6FF;
+            font-weight: 400;
+            font-size: 500%;
+      }
+
+      .navbar {
+        margin-left: 20%;
+      }
+      #top-nav .form-group{
+        position: absolute;
+      }
+
+      .spaced {
+        margin-left:20px; 
+        margin-top: 20px;
+      }
+
+    </style> 
+</head>
+<body>
+
+<nav class="navbar navbar-inverse top-right-nav" style="margin-bottom: 0px" id="top-nav">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+<!--             <a class="navbar-brand" href="/">
+                Homespector Gadget
+            </a> -->
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse"
+             id="bs-example-navbar-collapse-1">     
+        <div class="collapse navbar-collapse navbar-right">  
+                  <ul class="nav navbar-nav navbar-right" id="session-login">
+              {% if "user_id" in session %}
+                  <li><a href="/logout">Logout</a></li>
+              {% else %}
+                  <li><a href="/#" id="register">Register</a></li>
+                  <li><a href="/#" id="login">Login</a></li>
+              {% endif %}
+
+            </ul>    
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+  </div> 
+</nav>
+    <div id="login-form" class="modal modal-login">
+    </div>
+
+    <div id="address-confirm" class="modal modal-confirm">
+    </div>
+
+
+{% block content %}
+
+{% endblock %}
+
+<div id="contents">
+  <div class="img">
+    <img id="sf-homes" src="static/sfhomes.jpg">
+      <div class="transbox">
+      <p><h1 id="welcome-text">Films to Friends</h1></p>
+      <p><h4 id="welcome-text">Take your personality test<br>
+        all in one place.</h4></p>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+
+
