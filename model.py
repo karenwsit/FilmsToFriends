@@ -41,6 +41,22 @@ class User(db.Model):
         """Provide helpful representation when printed."""
         return "<User user_id=%s email=%s>" % (self.user_id, self.email)
 
+class Movie(db.Model):
+    """Sunnyvale Movie data"""
+
+    def __init__(self, title=None, genre=None, length=None, image_link=None):
+        self.title = title
+        self.genre = genre
+        self.length = length
+        self.image_link = image_link
+
+    __tablename__ = "movies"
+
+    movie_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    title = db.Column(db.String(64), nullable=True)
+    genre = db.Column(db.String(64), nullable=True)
+    length = db.Column(db.String(64), nullable=True)
+    image_link = db.Column(db.String(64))
 
 
 ###############################################################
