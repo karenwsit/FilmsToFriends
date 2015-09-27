@@ -19,9 +19,10 @@
           $("#movietimes-btn").click(function() {
 
       // Send the personality type to the database
-              $.get("/movies", {'address-search': $("#address-search").val()}).done(function(results) {
+              $.get("/movies").done(function(results) {
                   var contents = results;
-                  $("#movietimes-btn").css("display","inline");
+                  $("#contents").html(contents);
+                  $("#movietimes-btn").css("display","hidden");
               });   
           });
       });
