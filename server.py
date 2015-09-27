@@ -110,6 +110,6 @@ if __name__ == "__main__":
 
 # @app.route("/json")
 # def jsonify_result():
-    
+
 #     personality_types = traitify.get_personality_types(assessment.id)
 #     print personality_types
