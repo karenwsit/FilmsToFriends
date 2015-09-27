@@ -23,6 +23,8 @@ def index():
     traitify = Traitify(traitify_secret)
     assessment = traitify.create_assessment("movies")
 
+    session['assessment'] = assessment.id
+
     return render_template('index.html', traitifyPublic=traitify_public, traitifySecret=traitify_secret, assessmentId=assessment.id)
 
 @app.route('/register', methods=['GET'])
@@ -52,10 +54,11 @@ def register_process():
         db.session.add(new_user)
         db.session.commit()
 
-        flash("User created!")
+        return render_template("registration-confirm.html", error_message = "New user %s added." % email)
 
     else:
-        flash("User already registered!")
+        return render_template("error-dialog.html", error_message = "This email is already Registered.\n Please login or register with a different email.")
+
 
 
 @app.route('/login', methods=['GET'])
@@ -84,11 +87,10 @@ def login_process():
         flash("Incorrect password")
         return redirect("/login")
 
-    session["user_id"] = user.user_id
+    session["user_id"] = user.user_id #store user id in session
 
-    flash("Hello, %s!" % user.fname)
 
-    print session["user_id"], "********************************"
+    print "session is: ", session, "********************************"
 
     return render_template("session-login.html", session=session)
 
@@ -102,13 +104,30 @@ def logout():
     flash("Logged Out.")
     return redirect("/")
 
-# @app.route("/json")
-# def jsonify_result():
 
-#     personality_types = traitify.get_personality_types(assessment.id)
-#     print personality_types
+@app.route("/json")
+def jsonify_result():
 
-################################
+    assessment_id = session.get('assessment',"")
+
+    personality_types = traitify.get_personality_types(assessment_id)
+
+
+    this_property = Property.query.filter(Property.zpid == property_from_url.zpid).first()
+
+    if this_property is None:
+        db.session.add(property_from_url)
+        db.session.commit()
+
+    this_property = property_from_url 
+    
+    print personality_types
+
+
+
+
+    return render_template("results.html", session=session)
+###############################
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
     # that we invoke the DebugToolbarExtension

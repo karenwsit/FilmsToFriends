@@ -1,7 +1,7 @@
 {% block content %}
 <script>
 //Ajax to make registration disappear upon registering
-
+//Ajax to make registration disappear upon registering
 $(document).ready(function() {
     $("#registration-submit").click(function(event) {
         event.preventDefault();
@@ -15,7 +15,13 @@ $(document).ready(function() {
             'password':$ ("#register-password").val(),
             'zipcode':$('#register-zipcode').val()}
             })
-            $("#login-form").css("display","none");  
+            .done(function(result) {
+                if (result.length > 0 ) {
+                    $("#address-confirm").css("display","block");
+                    $("#address-confirm").html(result);
+            }
+            $("#login-form").css("display","none");
+       });  
     });
 });
 
