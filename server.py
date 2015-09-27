@@ -109,8 +109,10 @@ def logout():
 def jsonify_result():
 
     assessment_id = session.get('assessment',"")
+    traitify = Traitify(traitify_secret)
 
     personality_types = traitify.get_personality_types(assessment_id)
+    print personality_types
 
 
     this_property = Property.query.filter(Property.zpid == property_from_url.zpid).first()
@@ -119,11 +121,7 @@ def jsonify_result():
         db.session.add(property_from_url)
         db.session.commit()
 
-    this_property = property_from_url 
-    
-    print personality_types
-
-
+    this_property = property_from_url
 
 
     return render_template("results.html", session=session)
